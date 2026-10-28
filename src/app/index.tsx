@@ -1,88 +1,36 @@
-import { useState } from 'react';
-import { Text, View, StyleSheet, Button, Alert } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { EventCard } from '@/components/EventCard';
+import { initialEvents } from '@/data/events';
 
 export default function IndexScreen() {
-  // Створюємо змінну стану, яка запам'ятовує, чи натиснули кнопку
-  const [showEvent, setShowEvent] = useState(false);
-
-  const handlePress = () => {
-    Alert.alert('Оновлення бази', 'Завантажуємо свіжі дані...');
-    setShowEvent(true); // Змінюємо стан, щоб показати приховану подію
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Події БФКПЕП</Text>
-      <Text style={styles.description}>Головні новини та анонси нашого коледжу.</Text>
-
-      {/* Умова: якщо showEvent === true, показуємо подію, інакше — підказку */}
-      {showEvent ? (
-        <View style={styles.eventCard}>
-          <Text style={styles.eventTitle}>Сьогодні: Турнір з настільного тенісу</Text>
-          <Text style={styles.eventDetails}>Збираємо усіх у спортивній залі</Text>
-        </View>
-      ) : (
-        <Text style={styles.hint}>Список подій з'явиться нижче</Text>
-      )}
-
-      <View style={styles.buttonContainer}>
-        <Button
-          title={showEvent ? "Перевірити ще раз" : "Отримати нові події"}
-          onPress={handlePress}
-          color="#0066cc"
-        />
+    <SafeAreaView style={styles.screen} edges={['top', 'left', 'right']}>
+      <View style={styles.header}>
+        <Text style={styles.eyebrow}>БФКПЕП · СТУДЕНТСЬКЕ ЖИТТЯ</Text>
+        <Text style={styles.title} accessibilityRole="header">Події коледжу</Text>
+        <Text style={styles.subtitle}>Зустрічайся, навчайся та долучайся.</Text>
+        <Text style={styles.count}>{initialEvents.length} події · Навчальні приклади</Text>
       </View>
-    </View>
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.list}>
+        {initialEvents.map((event) => (
+          <EventCard key={event.id} event={event} />
+        ))}
+        <Text style={styles.footer}>Це всі події. До зустрічі в коледжі!</Text>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    color: '#333',
-  },
-  description: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  hint: {
-    fontSize: 14,
-    color: '#888',
-    fontStyle: 'italic',
-    marginBottom: 30,
-  },
-  buttonContainer: {
-    width: '80%',
-    borderRadius: 8,
-    overflow: 'hidden',
-  },
-  eventCard: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 30,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    width: '90%',
-  },
-  eventTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#d9534f',
-    marginBottom: 5,
-  },
-  eventDetails: {
-    fontSize: 14,
-    color: '#555',
-  }
+  screen: { flex: 1, backgroundColor: '#f2f5fa' },
+  header: { paddingHorizontal: 22, paddingTop: 20, paddingBottom: 18, gap: 8, width: '100%', maxWidth: 640, alignSelf: 'center' },
+  eyebrow: { fontSize: 10, letterSpacing: 1.1, fontWeight: '700', color: '#486495' },
+  title: { fontSize: 32, lineHeight: 40, fontWeight: '800', color: '#192b48' },
+  subtitle: { fontSize: 15, lineHeight: 22, color: '#53657e' },
+  count: { fontSize: 12, color: '#53657e', marginTop: 4 },
+  scroll: { flex: 1 },
+  list: { paddingHorizontal: 18, paddingTop: 2, paddingBottom: 28, gap: 14, width: '100%', maxWidth: 640, alignSelf: 'center' },
+  footer: { fontSize: 12, lineHeight: 20, textAlign: 'center', color: '#53657e', paddingVertical: 10 },
 });
