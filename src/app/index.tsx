@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { EventForm } from '@/components/EventForm';
 import { EventCard } from '@/components/EventCard';
 import { initialEvents } from '@/data/events';
 import type { EventItem } from '@/types/event';
@@ -11,6 +12,7 @@ const categories: CategoryFilter[] = ['Усі', 'Навчання', 'Культ�
 
 export default function IndexScreen() {
 
+  const [events, setEvents] = useState<EventItem[]>(initialEvents);
   const [category, setCategory] = useState<CategoryFilter>('Усі');
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const [filterNotice, setFilterNotice] = useState('');
@@ -18,9 +20,9 @@ export default function IndexScreen() {
 
   const visibleEvents = useMemo(() => {
     return category === 'Усі'
-      ? initialEvents
-      : initialEvents.filter((event) => event.category === category);
-  }, [category]);
+      ? events
+      : events.filter((event) => event.category === category);
+  }, [events, category]);
 
   useEffect(() => {
     if (previousCategory.current === category) return;
@@ -43,10 +45,16 @@ export default function IndexScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.list} keyboardShouldPersistTaps="handled">
       <View style={styles.header}>
         <Text style={styles.eyebrow}>БФКПЕП · СТУДЕНТСЬКЕ ЖИТТЯ</Text>
         <Text style={styles.title} accessibilityRole="header">Події коледжу</Text>
         <Text style={styles.subtitle}>Зустрічайся, навчайся та долучайся.</Text>
+        <Image source={require('../../assets/images/college-events.jpg')} accessible accessibilityLabel="Студенти спілкуються за столом із зошитами у дворі коледжу" style={styles.banner} resizeMode="cover" />
+      </View>
+      <EventForm onAdd={(event) => setEvents((previous) => [event, ...previous])} />
+      <View style={styles.header}>
         <View style={styles.filters}>
           {categories.map((item) => (
             <Pressable
@@ -67,14 +75,14 @@ export default function IndexScreen() {
           ))}
         </View>
         <View style={styles.summary}>
-          <Text style={styles.count}>Показано: {visibleEvents.length} із {initialEvents.length}</Text>
+          <Text style={styles.count}>Показано: {visibleEvents.length} із {events.length}</Text>
           <Text style={styles.favoriteCount}>Обрано: {favoriteIds.length}</Text>
         </View>
         <View style={styles.noticeSlot}>
           <Text style={styles.notice} accessibilityLiveRegion="polite">{filterNotice}</Text>
         </View>
       </View>
-      <ScrollView style={styles.scroll} contentContainerStyle={styles.list}>
+
         {visibleEvents.length === 0 ? (
           <View style={styles.empty}>
             <Text style={styles.emptyTitle}>У цій категорії поки немає подій</Text>
@@ -94,13 +102,15 @@ export default function IndexScreen() {
           <Text style={styles.footer}>Це всі події. До зустрічі в коледжі!</Text>
         )}
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#f2f5fa' },
-  header: { paddingHorizontal: 22, paddingTop: 20, paddingBottom: 6, gap: 8, width: '100%', maxWidth: 640, alignSelf: 'center' },
+  header: { paddingHorizontal: 4, paddingTop: 8, paddingBottom: 6, gap: 8, width: '100%', maxWidth: 640, alignSelf: 'center' },
+  banner: { width: '100%', height: 150, borderRadius: 14, marginTop: 8 },
   eyebrow: { fontSize: 10, letterSpacing: 1.1, fontWeight: '700', color: '#486495' },
   title: { fontSize: 32, lineHeight: 40, fontWeight: '800', color: '#192b48' },
   subtitle: { fontSize: 15, lineHeight: 22, color: '#53657e' },
@@ -116,7 +126,7 @@ const styles = StyleSheet.create({
   noticeSlot: { minHeight: 24, justifyContent: 'center' },
   notice: { fontSize: 12, lineHeight: 18, color: '#264ca1' },
   scroll: { flex: 1 },
-  list: { paddingHorizontal: 18, paddingTop: 2, paddingBottom: 28, gap: 14, width: '100%', maxWidth: 640, alignSelf: 'center' },
+  list: { paddingHorizontal: 18, paddingTop: 16, paddingBottom: 28, gap: 14, width: '100%', maxWidth: 640, alignSelf: 'center' },
   empty: { padding: 22, gap: 10, backgroundColor: '#ffffff', borderRadius: 18, borderWidth: 1, borderColor: '#dce2ec' },
   emptyTitle: { fontSize: 18, lineHeight: 25, fontWeight: '700', color: '#192b48' },
   emptyHint: { fontSize: 14, lineHeight: 22, color: '#53657e' },
