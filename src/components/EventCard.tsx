@@ -47,7 +47,7 @@ export function EventCard({ event, isFavorite, onToggleFavorite }: EventCardProp
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#dce2ec', borderRadius: 18, padding: 18, gap: 10 },
+  card: { flex: 1, backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#dce2ec', borderRadius: 18, padding: 18, gap: 10 },
   favoriteCard: { borderColor: '#7e9ad4' },
   topRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 },
   category: { fontSize: 12, fontWeight: '700', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8 },

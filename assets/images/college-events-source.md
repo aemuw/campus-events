@@ -1,5 +1,5 @@
-# Локальний банер
+# Банер БФКПЕП
 
-college-events.jpg — згенероване тематичне зображення для навчального проєкту, не фото конкретного коледжу. Створено вбудованим imagegen 30.10.2026; фінальна версія обрана користувачем після прохання покращити банер.
+college-events.jpg — оригінальний текстовий банер для навчального проєкту, створений вбудованим imagegen 30.10.2026. Це не офіційна емблема. Назва звірена з офіційним сайтом: https://www.bfcpep.org.ua/ .
 
-Prompt: A premium editorial photographic banner for a Ukrainian college student events app, landscape 3:1. Six adult students naturally talking around a table with notebooks in a campus courtyard at golden hour; warm brick and leafy trees, a guitar nearby. Candid atmosphere, warm sunlight, navy clothes, main subjects in the middle horizontal band, no text or branding. Fictional generic college.
+Prompt: Simple elegant institutional 3:1 navy banner with subtle geometric corner accents, white acronym «БФКПЕП», then «Бердичівський фаховий коледж» and «промисловості, економіки та права». Small yellow accent. Crisp legible typography. No photos, people, invented buildings, emblems or extra text.

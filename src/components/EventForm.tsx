@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import type { useEventForm } from '@/hooks/use-event-form';
 import { Keyboard, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import type { EventItem } from '@/types/event';
@@ -6,15 +6,10 @@ import type { EventItem } from '@/types/event';
 const categories: EventItem['category'][] = ['Навчання', 'Культура', 'Спорт'];
 let localSequence = 0;
 
-type EventFormProps = { onAdd: (event: EventItem) => void };
+type EventFormProps = { onAdd: (event: EventItem) => void; form: ReturnType<typeof useEventForm> };
 
-export function EventForm({ onAdd }: EventFormProps) {
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
-  const [place, setPlace] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState<EventItem['category']>('Навчання');
-  const [error, setError] = useState('');
+export function EventForm({ onAdd, form }: EventFormProps) {
+  const { title, setTitle, date, setDate, place, setPlace, description, setDescription, category, setCategory, error, setError } = form;
 
   const submit = () => {
     const values = { title: title.trim(), date: date.trim(), place: place.trim(), description: description.trim() };
